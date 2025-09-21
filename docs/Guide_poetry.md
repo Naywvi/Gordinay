@@ -179,13 +179,13 @@ repos:
     hooks:
       - id: black
         language_version: python3.9
-  
+
   - repo: https://github.com/pycqa/flake8
     rev: 6.0.0
     hooks:
       - id: flake8
         args: [--max-line-length=88, --extend-ignore=E203]
-  
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
@@ -212,21 +212,21 @@ class TestCrypto:
         """Test basique de chiffrement/déchiffrement"""
         message = "Hello World"
         key = "ma_cle_secrete"
-        
+
         encrypted = encrypt_message(message, key)
         decrypted = decrypt_message(encrypted, key)
-        
+
         assert decrypted == message
         assert encrypted != message
-    
+
     def test_encrypt_empty_message(self):
         """Test avec message vide"""
         message = ""
         key = "ma_cle_secrete"
-        
+
         encrypted = encrypt_message(message, key)
         decrypted = decrypt_message(encrypted, key)
-        
+
         assert decrypted == message
 ```
 
@@ -241,25 +241,25 @@ class TestRATServer:
     def setup_method(self):
         """Setup avant chaque test"""
         self.server = RATServer(host="127.0.0.1", port=8888)
-    
+
     def test_server_initialization(self):
         """Test d'initialisation du serveur"""
         assert self.server.host == "127.0.0.1"
         assert self.server.port == 8888
         assert self.server.clients == []
-    
+
     def test_server_start_stop(self):
         """Test de démarrage/arrêt du serveur"""
         # Démarrer en thread pour ne pas bloquer
         server_thread = threading.Thread(target=self.server.start)
         server_thread.daemon = True
         server_thread.start()
-        
+
         # Vérifier que le serveur écoute
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             result = sock.connect_ex(("127.0.0.1", 8888))
             assert result == 0  # Connexion réussie
-        
+
         self.server.stop()
 ```
 
@@ -275,27 +275,27 @@ class TestFileOperations:
         """Setup avant chaque test"""
         self.file_ops = FileOperations()
         self.temp_dir = tempfile.mkdtemp()
-    
+
     def test_file_search(self):
         """Test de recherche de fichier"""
         # Créer un fichier temporaire
         test_file = os.path.join(self.temp_dir, "test.txt")
         with open(test_file, "w") as f:
             f.write("test content")
-        
+
         # Chercher le fichier
         results = self.file_ops.search_file("test.txt", self.temp_dir)
-        
+
         assert len(results) == 1
         assert test_file in results[0]
-    
+
     def test_file_upload_download(self):
         """Test d'upload/download de fichier"""
         # Créer un fichier source
         source_file = os.path.join(self.temp_dir, "source.txt")
         with open(source_file, "w") as f:
             f.write("test upload content")
-        
+
         # Simuler upload puis download
         # TODO: Implémenter les vraies fonctions
         assert os.path.exists(source_file)
@@ -331,7 +331,7 @@ from server import RATServer
 def main():
     logging.basicConfig(level=logging.INFO)
     server = RATServer(host="0.0.0.0", port=8888)
-    
+
     try:
         server.start()
     except KeyboardInterrupt:
@@ -351,7 +351,7 @@ from client import RATClient
 def main():
     logging.basicConfig(level=logging.INFO)
     client = RATClient(server_host="127.0.0.1", server_port=8888)
-    
+
     try:
         client.connect()
         client.run()

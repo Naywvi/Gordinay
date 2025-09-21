@@ -3,7 +3,7 @@
 ## Description
 Système de RAT (Remote Administration Tool) développé en Python composé d'un serveur et d'un client communicant via socket TCP chiffrée et sécurisée.
 
-**Date limite** : 31 décembre 2025 à 23h59  
+**Date limite** : 31 décembre 2025 à 23h59
 **Groupe** : 2 personnes uniquement
 
 ## Installation
@@ -91,6 +91,6 @@ python client.py
 ## Points d'Attention
 ⚠️ **Malus à éviter** :
 - Absence de chiffrement : -2 points
-- Pas de vidéo : -2 points  
+- Pas de vidéo : -2 points
 - Pas de tests unitaires : -2 points
 - Utilisation de print au lieu de logger : -1 point

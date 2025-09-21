@@ -1,0 +1,14 @@
+[project]
+name = "rat-project"
+version = "0.1.0"
+description = "Remote Administration Tool"
+authors = [
+
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
