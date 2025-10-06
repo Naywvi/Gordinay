@@ -9,11 +9,11 @@ class Main:
     
     '''
     -> how to use log message:
-        self.new_log("Application started", "info") 
-        self.new_log("This is a debug message", "debug")
-        self.new_log("This is a warning message", "warning")
-        self.new_log("This is an error message", "error")
-        self.new_log("This is a critical message", "critical")
+        self._log_("Application started", "info") 
+        self._log_("This is a debug message", "debug")
+        self._log_("This is a warning message", "warning")
+        self._log_("This is an error message", "error")
+        self._log_("This is a critical message", "critical")
     '''
 
     __ENVIRONNEMENT = ENVIRONNEMENT.configuration()
@@ -31,12 +31,12 @@ class Main:
             self.__debug_mode__()
             self.__setup_log__()
             # self.__run__()
-            self.new_log("This is a critical message", "critical")
+            
         except Exception as e:
             if self.logger:
                 self.logger.error(f"[ERROR] {e}")
             else:
-                print(f"[ERROR] {e}")
+                print(f"[ERROR] {e}") # Fallback if logger is not initialized
 
     @staticmethod
     def __ascii_art__() -> None:
@@ -99,8 +99,9 @@ class Main:
                     
         except Exception as e:
             raise e
+    _log_ = new_log  # Alias for new_log method
         
-    def __setup_log__(self):
+    def __setup_log__(self) -> None:
         """Log main application events"""
 
         try:
