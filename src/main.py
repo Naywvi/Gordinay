@@ -1,5 +1,5 @@
 from __conf__.main import ENVIRONNEMENT
-from coloredFormatter import ColoredFormatter
+from __utils__.coloredFormatter import ColoredFormatter
 from datetime import datetime
 import logging, os
 
@@ -18,12 +18,16 @@ class Main:
 
     __ENVIRONNEMENT = ENVIRONNEMENT.configuration()
     logger = None
+
+    LOG_DIR = "logs/global"
+    APP_NAME = "Gordinay"
+    VERSION = "1.0.0"
     
     def __init__(self) -> None:
         """Init main class"""
 
         try:
-            self.ascii_art()
+            self.__ascii_art__()
             self.__debug_mode__()
             self.__setup_log__()
             # self.__run__()
@@ -35,7 +39,7 @@ class Main:
                 print(f"[ERROR] {e}")
 
     @staticmethod
-    def ascii_art() -> None:
+    def __ascii_art__() -> None:
         """Display ASCII art"""
 
         # ASCII art from /assets/gordinay.txt
@@ -47,7 +51,7 @@ class Main:
                 print(ascii_art)
         except Exception as e:
             raise e
-        
+    
     def new_log(self, message: str, level: str = "info") -> None:
         """Create a new log entry"""
         
@@ -107,11 +111,11 @@ class Main:
 
             # Create logs directory if it doesn't exist
             if not os.path.exists("logs"):
-                os.makedirs("logs/global", exist_ok=True)
+                os.makedirs(self.LOG_DIR, exist_ok=True)
 
             # Create log file with timestamp
-            timestamp = self.__get_timestamp()
-            log_filename = f"logs/global/{timestamp}.log"
+            timestamp = self.__get_timestamp__()
+            log_filename = f"{self.LOG_DIR}/{timestamp}.log"
 
             # Create log file if it doesn't exist
             if not os.path.exists(log_filename):
@@ -191,7 +195,8 @@ class Main:
         except Exception as e:
             raise e
 
-    def __restart__(self):
+    @classmethod
+    def __restart__(cls):
         """Restart main application"""
 
         try:
@@ -206,16 +211,9 @@ class Main:
             pass
         except Exception as e:
             raise e
-        
-    def __log__(self):
-        """Log main application events"""
 
-        try:
-            pass
-        except Exception as e:
-            raise e
-
-    def __get_timestamp(self):
+    @staticmethod
+    def __get_timestamp__() -> str:
         """Get current timestamp"""
 
         try:

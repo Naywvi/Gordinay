@@ -17,8 +17,9 @@ def auto_cast(value) -> bool | int | float | str | None:  # Python is stupid can
 
 
 class ENVIRONNEMENT:
+    '''Class to manage environment variables and configuration.'''
     load_dotenv()
-
+    
     __configuration = {
         k: auto_cast(os.getenv(k))
         for k in ["server_log", "client_log", "global_log", "debug_mode", "LOG_LEVEL"]
