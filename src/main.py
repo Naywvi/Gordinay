@@ -31,7 +31,7 @@ class Main:
             self.__debug_mode__()
             self.__setup_log__()
             # self.__run__()
-            
+            self.new_log("This is a critical message", "critical")
         except Exception as e:
             if self.logger:
                 self.logger.error(f"[ERROR] {e}")
@@ -60,7 +60,7 @@ class Main:
                 raise Exception("Logger not initialized")
             
             # Config logger
-            logger = logging.getLogger(self.__class__.__name__)
+            logger = logging.getLogger(f"{self.APP_NAME}, {self.VERSION}")
             logger.setLevel(logging.DEBUG)
 
             # Define log format
@@ -137,7 +137,7 @@ class Main:
                 level_value = getattr(
                     logging, self.__ENVIRONNEMENT["LOG_LEVEL"].upper(), logging.INFO
                 )
-                self.logger = logging.getLogger(self.__class__.__name__)
+                self.logger = logging.getLogger(f"{self.APP_NAME}, {self.VERSION}")
 
                 console_handler = logging.StreamHandler()
                 formatter = ColoredFormatter(
