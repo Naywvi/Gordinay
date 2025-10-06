@@ -25,9 +25,12 @@ class ENVIRONNEMENT:
     }
 
     @staticmethod
-    def configuration(nom=None):
+    def configuration(var_name=None):
         """Returns the configuration dictionary or a specific value if a
         key is provided."""
-        if nom:
-            return ENVIRONNEMENT.__configuration.get(nom)
-        return ENVIRONNEMENT.__configuration
+        if var_name and var_name not in ["server_log", "client_log", "debug_log", "debug_mode", "LOG_LEVEL"]:
+            raise KeyError(f"La clé '{var_name}' n'existe pas dans la configuration")
+        else:   
+            if var_name:
+                return ENVIRONNEMENT.__configuration.get(var_name)
+            return ENVIRONNEMENT.__configuration
