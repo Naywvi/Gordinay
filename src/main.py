@@ -22,21 +22,26 @@ class Main:
 
         try:
             AsciiArt.__display__()
+            self._log_init()
+            self.__run_dev_application__()
+        except Exception as e:
+            if self.logger: self.print(e, "error")
+            else: print(f"[ERROR] {e}")
+    
+    def _log_init(self):
+        """Initialize logger"""
 
+        try:
             if not (logger := log(self.APP_NAME, self.VERSION, self.LOG_DIR)):
                 self.logger = None
                 raise Exception("Logger initialization failed")
             else:
                 self.logger = True
                 self.print = logger.__print_log__
-            
-            self.print("Application started", "info")
-            
         except Exception as e:
-            if self.logger: self.print(e, "error")
-            else: print(f"[ERROR] {e}")
-    
-    def __run__(self):
+            raise e
+        
+    def __run_dev_application__(self):
         """Run main application logic"""
 
         try:
