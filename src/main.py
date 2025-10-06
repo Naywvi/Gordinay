@@ -33,11 +33,11 @@ class Main:
         """Enable debug mode"""
 
         '''
-        self.logger.debug("Ceci est un message de debug")
-        self.logger.info("Ceci est une information")
-        self.logger.warning("Attention : possible problème")
-        self.logger.error("Une erreur s'est produite")
-        self.logger.critical("Erreur critique !")
+        self.logger.debug("this is a debug message !")
+        self.logger.info("this is an info message !")
+        self.logger.warning("this is a warning message !")
+        self.logger.error("this is an error message !")
+        self.logger.critical("this is a critical message !")
         '''
 
         try:
