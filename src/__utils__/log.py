@@ -144,3 +144,23 @@ class Logger:
             return datetime.now().strftime("%Y-%m-%d")
         except Exception as e:
             raise e
+    
+    def __print_log__(self, message: str, level: str = "info") -> None:
+        """Print a log message to console and write it to file."""
+
+        try:
+            level = level.lower()
+
+            log_methods = {
+                "debug": self.logger.debug,
+                "info": self.logger.info,
+                "warning": self.logger.warning,
+                "error": self.logger.error,
+                "critical": self.logger.critical,
+            }
+            log_fn = log_methods.get(level, self.logger.info)
+            log_fn(f"[{level.upper()}] {message}")
+            self.new_log(message, level)
+
+        except Exception as e:
+            raise Exception(f"Logging failed: {e}")

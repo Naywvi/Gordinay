@@ -26,18 +26,15 @@ class Main:
             if not (logger := log(self.APP_NAME, self.VERSION, self.LOG_DIR)):
                 self.logger = None
                 raise Exception("Logger initialization failed")
-            else: 
-                self.logger = logger
-                self.writeLog = logger.new_log
+            else:
+                self.logger = True
+                self.print = logger.__print_log__
             
-            self.writeLog("Application started", "info")
+            self.print("Application started", "info")
             
         except Exception as e:
-            # if self.logger:
-            #     self.logger.error(f"[ERROR] {e}")
-            # else:
-            #     print(f"[ERROR] {e}") # Fallback if logger is not initialized
-            print(f"[ERROR] {e}") # Fallback if logger is not initialized
+            if self.logger: self.print(e, "error")
+            else: print(f"[ERROR] {e}")
     
     def __run__(self):
         """Run main application logic"""
