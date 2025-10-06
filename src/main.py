@@ -1,10 +1,7 @@
-import os
-from unittest import case
-from xml.sax import handler
 from __conf__.main import ENVIRONNEMENT
 from coloredFormatter import ColoredFormatter
 from datetime import datetime
-import logging
+import logging, os
 
 
 class Main:
