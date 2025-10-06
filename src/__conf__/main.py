@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 
 
-def auto_cast(value):  # Python is stupid can't do this natively :)
+def auto_cast(value) -> bool | int | float | str | None:  # Python is stupid can't do this natively :)
     """Convert a string to its appropriate type (bool, int, float, or str)."""
     if value is None:
         return None
@@ -25,7 +25,7 @@ class ENVIRONNEMENT:
     }
 
     @staticmethod
-    def configuration(var_name=None):
+    def configuration(var_name=None) -> dict | str | int | bool | float | None:
         """Returns the configuration dictionary or a specific value if a
         key is provided."""
         if var_name and var_name not in ["server_log", "client_log", "debug_log", "debug_mode", "LOG_LEVEL"]:
