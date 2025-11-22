@@ -1,4 +1,16 @@
+# Environment variables
 .env
+
+# Python cache files
 "__pycache__/"
 "*.pyc"
 "*.pyo"
+
+# Logs
+logs/
+*.log
+
+# Certificates / Keys
+server_socket.pem
+server_cert.pem
+*.pem
