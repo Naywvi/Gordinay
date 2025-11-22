@@ -1,34 +1,53 @@
+"""
+Main application entry point
+"""
+
 from __utils__.log import Logger as log
 from __utils__.asciiArt import AsciiArt
+from __app__.client_app.main import ClientApp
+from __utils__.termianl import TerminalUtils as term_utils
+from __app__.client_app.utils.clientError.main import ClientError
+import asyncio
 
 class Main:
     """Main application class"""
     
     '''
     -> how to use log message:
-        self.writeLog("Application started", "info") 
-        self.writeLog("This is a debug message", "debug")
-        self.writeLog("This is a warning message", "warning")
-        self.writeLog("This is an error message", "error")
-        self.writeLog("This is a critical message", "critical")
+        self.print("Application started", "info") 
+        self.print("This is a debug message", "debug")
+        self.print("This is a warning message", "warning")
+        self.print("This is an error message", "error")
+        self.print("This is a critical message", "critical")
     '''
 
-    LOG_DIR = "logs/global"
+    LOG_DIR = "logs/client"
     APP_NAME = "Gordinay"
     VERSION = "1.0.0"
     
     def __init__(self) -> None:
-        """Init main class"""
-
+        """Initialize main class (synchronous)"""
+        
+        self.logger = None
+        self.print = print
+    
+    async def initialize(self) -> None:
+        """Asynchronous initialization method"""
+        
         try:
             AsciiArt.__display__()
             self._log_init()
-            self.__run_dev_application__()
+            await self.__start__server__()
+            await self.__start__client__()
+            
         except Exception as e:
-            if self.logger: self.print(e, "error")
-            else: print(f"[ERROR] {e}")
-    
-    def _log_init(self):
+            if self.logger:
+                data = e.args[0]
+                self.print(data["message"], data["level"])
+            else:
+                print(f"[ERROR] {e}") # The only way to display the error is here, as the logger may not be initialized.
+
+    def _log_init(self) -> None:
         """Initialize logger"""
 
         try:
@@ -39,56 +58,34 @@ class Main:
                 self.logger = True
                 self.print = logger.__print_log__
         except Exception as e:
-            raise e
+            raise ClientError("Main error in _log_init function - " + str(e), "critical")
         
-    def __run_dev_application__(self):
-        """Run main application logic"""
-
-        try:
-            pass
-        except Exception as e:
-            raise e
-        
-    def __server_start__(self):
-        """Start server"""
-
-        try:
-            pass
-        except Exception as e:
-            raise e
-
-    def __client_start__(self):
+    async def __start__client__(self) -> None:
         """Start client"""
 
         try:
-            pass
+            ClientApp()
         except Exception as e:
-            raise e
+            raise ClientError("Main error in __start__client__ function - " + str(e), "critical")
 
-    def __stop__(self, message: str = None):
-        """Stop main application"""
+    async def __start__server__(self) -> None:
+        """Start server"""
 
         try:
-            pass
+            cmd = term_utils.get_python_command()
+            term_utils.open_new_terminal(f"{cmd} src/__app__/server_app/server.py")
         except Exception as e:
-            raise e
+            raise ClientError("Main error in __start__server__ function - " + str(e), "critical")
+    
+async def main() -> None:
+    """Asynchronous entry point"""
 
-    @classmethod
-    def __restart__(cls):
-        """Restart main application"""
+    try:
+        app = Main()
+        await app.initialize()
 
-        try:
-            pass
-        except Exception as e:
-            raise e
-
-    def __status__(self):
-        """Get current status of main application"""
-
-        try:
-            pass
-        except Exception as e:
-            raise e
+    except Exception as e:
+        print(f"[ERROR] {e}") # The only way to display the error is here, as the logger may not be initialized.
 
 if __name__ == "__main__":
-    Main()
+    asyncio.run(main())
