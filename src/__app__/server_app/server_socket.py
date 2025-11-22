@@ -18,7 +18,7 @@ import threading, time, uuid, base64, json, socket, ssl, cv2
 class ClientHandler:
     """Handle individual client connection"""
     
-    def __init__(self, client_socket, address, client_id, server) -> None:
+    def __init__(self, client_socket, address, client_id, server, printer=None) -> None:
         """
         Initialize client handler
         Args:
@@ -27,7 +27,7 @@ class ClientHandler:
             client_id: Unique client identifier
             server: Reference to parent ServerSocket
         """
-
+        self.print = printer
         self.socket = client_socket
         self.address = address
         self.client_id = client_id

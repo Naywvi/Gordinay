@@ -5,7 +5,7 @@ Main application entry point
 from __utils__.log import Logger as log
 from __utils__.asciiArt import AsciiArt
 from __app__.client_app.main import ClientApp
-from __utils__.termianl import TerminalUtils as term_utils
+from __utils__.terminal import TerminalUtils as term_utils
 from __app__.client_app.utils.clientError.main import ClientError
 import asyncio
 
