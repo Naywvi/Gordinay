@@ -11,7 +11,7 @@ Système de RAT (Remote Administration Tool) développé en Python composé d'un
 
 ```bash
 # Cloner le repository
-git clone [url-du-repo]
+git clone https://github.com/Naywvi/Gordinay.git
 cd projet-rat
 
 # Installation avec Poetry
