@@ -1,4 +1,4 @@
-# Projet Final - RAT (Remote Administration Tool)
+# Projet Final - Gordinay
 
 ## Description
 
@@ -12,7 +12,7 @@ Système de RAT (Remote Administration Tool) développé en Python composé d'un
 ```bash
 # Cloner le repository
 git clone https://github.com/Naywvi/Gordinay.git
-cd projet-rat
+cd Gordinay
 
 # Installation avec Poetry
 poetry install
