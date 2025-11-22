@@ -1,9 +1,13 @@
-import os
-from dotenv import load_dotenv
+"""
+Module for managing environment variables and configuration settings.
+"""
 
+from dotenv import load_dotenv
+import os
 
 def auto_cast(value) -> bool | int | float | str | None:  # Python is stupid can't do this natively :)
     """Convert a string to its appropriate type (bool, int, float, or str)."""
+
     if value is None:
         return None
     if value.lower() in ("true", "false"):
@@ -18,6 +22,7 @@ def auto_cast(value) -> bool | int | float | str | None:  # Python is stupid can
 
 class ENVIRONNEMENT:
     '''Class to manage environment variables and configuration.'''
+
     load_dotenv()
     
     __configuration = {
