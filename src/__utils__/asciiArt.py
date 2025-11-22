@@ -1,4 +1,9 @@
+"""
+Module for displaying ASCII art
+"""
+
 import os
+
 class AsciiArt:
     @staticmethod
     def __display__() -> None:

@@ -1,3 +1,7 @@
+"""
+Module providing a colored log formatter for enhanced log readability.
+"""
+
 import logging
 
 class ColoredFormatter(logging.Formatter):

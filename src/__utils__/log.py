@@ -1,8 +1,12 @@
-import logging
-import os
-from __utils__.coloredFormatter import ColoredFormatter
+"""
+Logger utility for application logging
+"""
+
+from .coloredFormatter import ColoredFormatter
 from __conf__.main import ENVIRONNEMENT
 from datetime import datetime
+import logging, os
+
 class Logger:
     '''Logger class for handling application logging'''
 
@@ -11,6 +15,7 @@ class Logger:
     
     def __init__(self, app_name: str, version: str, log_dir: str = "logs/global") -> None:
         '''Initialize Logger class'''
+        
         try:
             #if nor parameters are provided raise error
             if not app_name or not version:
