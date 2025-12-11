@@ -83,7 +83,6 @@ async def main() -> None:
     try:
         app = Main()
         await app.initialize()
-
     except Exception as e:
         print(f"[ERROR] {e}") # The only way to display the error is here, as the logger may not be initialized.
 

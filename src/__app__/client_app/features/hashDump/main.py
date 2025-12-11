@@ -6,8 +6,6 @@ For educational purposes only - Requires Administrator privileges - For Educatio
 
 from pathlib import Path
 from datetime import datetime
-from pypykatz.pypykatz import pypykatz
-from impacket.examples.secretsdump import LocalOperations, SAMHashes
 import subprocess, tempfile, io, csv
 
 
@@ -133,11 +131,12 @@ class HashDump:
         Parse SAM and SYSTEM hives to extract hashes
         This is a simplified version - for real use, use impacket
         """
-
+        
         try:
             # Try using impacket if available
             try:
-                
+                from impacket.examples.secretsdump import LocalOperations, SAMHashes
+                from pypykatz.pypykatz import pypykatz    
                 localOperations = LocalOperations(str(system_file))
                 bootKey = localOperations.getBootKey()
                 

