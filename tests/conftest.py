@@ -2,16 +2,54 @@
 Pytest configuration and shared fixtures for Gordinay tests
 """
 
-
 from pathlib import Path
 from unittest.mock import MagicMock, patch, Mock
 import pytest, sys, os, tempfile, shutil, json
 
-# Add src to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
+# Mock modules BEFORE any import
+mock_cv2 = MagicMock()
+mock_cv2.VideoCapture = MagicMock()
+mock_cv2.imwrite = MagicMock(return_value=True)
+mock_cv2.imencode = MagicMock(return_value=(True, b'fake_image_data'))
+mock_cv2.cvtColor = MagicMock(return_value=MagicMock())
+mock_cv2.GaussianBlur = MagicMock(return_value=MagicMock())
+mock_cv2.absdiff = MagicMock(return_value=MagicMock())
+mock_cv2.threshold = MagicMock(return_value=(None, MagicMock()))
+mock_cv2.dilate = MagicMock(return_value=MagicMock())
+mock_cv2.countNonZero = MagicMock(return_value=100)
+mock_cv2.resize = MagicMock(return_value=MagicMock())
+mock_cv2.IMWRITE_JPEG_QUALITY = 1
+mock_cv2.COLOR_BGR2GRAY = 6
+mock_cv2.THRESH_BINARY = 0
+mock_cv2.CAP_PROP_FRAME_WIDTH = 3
+mock_cv2.CAP_PROP_FRAME_HEIGHT = 4
+mock_cv2.CAP_PROP_FPS = 5
+sys.modules['cv2'] = mock_cv2
 
+mock_pil = MagicMock()
+mock_pil_image = MagicMock()
+mock_pil_image.width = 1920
+mock_pil_image.height = 1080
+mock_pil_image.resize.return_value = mock_pil_image
+mock_pil.Image = MagicMock()
+mock_pil.ImageGrab = MagicMock()
+mock_pil.ImageGrab.grab.return_value = mock_pil_image
+sys.modules['PIL'] = mock_pil
+sys.modules['PIL.Image'] = mock_pil.Image
+sys.modules['PIL.ImageGrab'] = mock_pil.ImageGrab
 
+mock_tabulate = MagicMock()
+mock_tabulate.tabulate = MagicMock(return_value="mocked table")
+sys.modules['tabulate'] = mock_tabulate
+
+@pytest.fixture(autouse=True)
+def mock_os_exit():
+    """Prevent os._exit from killing pytest"""
+    with patch('os._exit'):
+        yield
+        
 @pytest.fixture
 def mock_env_vars(monkeypatch):
     """Mock environment variables for testing"""
@@ -27,6 +65,8 @@ def temp_dir():
     """Create a temporary directory for test files"""
     dir_path = tempfile.mkdtemp()
     yield dir_path
+    import time
+    time.sleep(0.1)
     shutil.rmtree(dir_path, ignore_errors=True)
 
 
@@ -59,42 +99,6 @@ def mock_ssl_context():
         mock.return_value = mock_context
         mock_context.wrap_socket.return_value = MagicMock()
         yield mock_context
-
-
-@pytest.fixture
-def mock_cv2():
-    """Mock OpenCV for webcam/screenshot tests"""
-    with patch.dict('sys.modules', {'cv2': MagicMock()}):
-        import cv2
-        cv2.VideoCapture = MagicMock()
-        cv2.imwrite = MagicMock(return_value=True)
-        cv2.imencode = MagicMock(return_value=(True, b'fake_image_data'))
-        cv2.cvtColor = MagicMock(return_value=MagicMock())
-        cv2.GaussianBlur = MagicMock(return_value=MagicMock())
-        cv2.absdiff = MagicMock(return_value=MagicMock())
-        cv2.threshold = MagicMock(return_value=(None, MagicMock()))
-        cv2.dilate = MagicMock(return_value=MagicMock())
-        cv2.countNonZero = MagicMock(return_value=100)
-        cv2.resize = MagicMock(return_value=MagicMock())
-        cv2.IMWRITE_JPEG_QUALITY = 1
-        cv2.COLOR_BGR2GRAY = 6
-        cv2.THRESH_BINARY = 0
-        cv2.CAP_PROP_FRAME_WIDTH = 3
-        cv2.CAP_PROP_FRAME_HEIGHT = 4
-        cv2.CAP_PROP_FPS = 5
-        yield cv2
-
-
-@pytest.fixture
-def mock_pil():
-    """Mock PIL for screenshot tests"""
-    with patch('PIL.ImageGrab') as mock:
-        mock_image = MagicMock()
-        mock_image.width = 1920
-        mock_image.height = 1080
-        mock_image.resize.return_value = mock_image
-        mock.grab.return_value = mock_image
-        yield mock
 
 
 @pytest.fixture

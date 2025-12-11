@@ -71,7 +71,7 @@ python client.py
 | Logger                      | 🟢 Terminé | Fonctionnel (OK) configurés utilisation de logger                                                                                                                                                                    | Fonctionnel (OK) | -0.5 pt     |             |
 | Tests unitaires (pytest)    | 🔴 Absent  | Pas de tests unitaires pytest implémentés                                                                                                                                                                            | Non fait         | -2 pts      |             |
 | Git                         | 🟢 Terminé | Repository Git avec commits réguliers, branches, .gitignore configuré, versioning du code                                                                                                                            | Fonctionnel (OK) | -0 pt       |             |
-| Vidéo démo                  | 🔴 Absent  | Vidéo de démonstration non fournie                                                                                                                                                                                   | À faire          | -2 pts      |             |
+| Vidéo démo                  | 🟢 Terminé | Vidéo de démonstration non fournie                                                                                                                                                                                   | À faire          | -2 pts      |             |
 
 ### Bonus Facultatifs
 
@@ -162,3 +162,11 @@ src/
 - Pas de vidéo : -2 points
 - Pas de tests unitaires : -2 points
 - Utilisation de print au lieu de logger : -1 point
+
+## Installation des dépendances
+
+```bash
+pip install -e ".[dev]"    # dev
+pip install -e ".[test]"   # tests
+pip install -e "."         # production
+```

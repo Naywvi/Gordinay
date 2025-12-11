@@ -1,19 +1,20 @@
 """
 Module providing a colored log formatter for enhanced log readability.
 """
-
+from colorama import init, Fore, Style
+init()
 import logging
 
 class ColoredFormatter(logging.Formatter):
     COLORS = {
-        "DEBUG": "\033[94m",    # Bleu
-        "INFO": "\033[92m",     # Vert
-        "WARNING": "\033[93m",  # Jaune
-        "ERROR": "\033[91m",    # Rouge
-        "CRITICAL": "\033[95m", # Magenta
+        "DEBUG": Fore.BLUE,
+        "INFO": Fore.GREEN,
+        "WARNING": Fore.YELLOW,
+        "ERROR": Fore.RED,
+        "CRITICAL": Fore.MAGENTA,
     }
 
-    RESET = "\033[0m"
+    RESET = Style.RESET_ALL
 
     
     def format(self, record) -> str:
